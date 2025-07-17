@@ -114,7 +114,7 @@ function getWebviewContent(mermaidCode: string): string {
             e.preventDefault();
             const delta = e.deltaY > 0 ? -0.1 : 0.1;
             scale += delta;
-            scale = Math.max(0.2, Math.min(3.0, scale));
+            scale = Math.max(0.2, Math.min(100.0, scale));
             graph.style.transform = \`scale(\${scale})\`;
           }
         }, { passive: false });
