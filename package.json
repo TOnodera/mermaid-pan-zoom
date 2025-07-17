@@ -9,15 +9,36 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "onLanguage:markdown",
+    "onCommand:mermaidPreview.open"
+  ],
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "vscode-mermaid-viewer.helloWorld",
-        "title": "Hello World"
+        "command": "mermaidPreview.open",
+        "title": "Mermaid プレビューを開く"
       }
-    ]
+    ],
+    "languages": [
+      {
+        "id": "markdown",
+        "extensions": [
+          ".md",
+          ".markdown"
+        ]
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "mermaidPreview.open",
+          "when": "editorLangId == 'markdown'",
+          "group": "navigation"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run package",
