@@ -10,8 +10,7 @@
     "Other"
   ],
   "activationEvents": [
-    "onLanguage:markdown",
-    "onCommand:mermaidPreview.open"
+    "onLanguage:markdown"
   ],
   "main": "./dist/extension.js",
   "contributes": {
@@ -29,16 +28,7 @@
           ".markdown"
         ]
       }
-    ],
-    "menus": {
-      "editor/title": [
-        {
-          "command": "mermaidPreview.open",
-          "when": "editorLangId == 'markdown'",
-          "group": "navigation"
-        }
-      ]
-    }
+    ]
   },
   "scripts": {
     "vscode:prepublish": "npm run package",
