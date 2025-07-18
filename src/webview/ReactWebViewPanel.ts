@@ -2,13 +2,18 @@ import * as vscode from "vscode";
 import { getUriForVsCodeWebView } from "../utilities/getUri";
 import { getNonce } from "../utilities/getNonce";
 import * as fs from "fs";
+import { findMermaidBlocks } from "../utilities/findMermaidBlocks";
 
 export class ReactWebViewPanel {
   public static currentPanel: ReactWebViewPanel | undefined;
   private readonly _panel: vscode.WebviewPanel;
   private _disposables: vscode.Disposable[] = [];
 
-  constructor(panel: vscode.WebviewPanel, extensionUri: vscode.Uri) {
+  constructor(
+    panel: vscode.WebviewPanel,
+    extensionUri: vscode.Uri,
+    mermaidText: string
+  ) {
     this._panel = panel;
     // パネルをとじたときのイベントを登録
     this._panel.onDidDispose(() => this.dispose(), null, this._disposables);
@@ -19,7 +24,18 @@ export class ReactWebViewPanel {
     );
 
     // メッセージ受信時の処理
-    this._registOnDidReceiveMessageHandler(() => {});
+    this._panel.webview.onDidReceiveMessage(
+      async (message: { type: string }) => {
+        if (message.type === "get-mermaid") {
+          // マーメイド取得する処理
+          console.log(mermaidText);
+          this._panel.webview.postMessage({
+            type: "send-mermaid",
+            payload: mermaidText,
+          });
+        }
+      }
+    );
   }
 
   public static render(
@@ -27,7 +43,8 @@ export class ReactWebViewPanel {
     panelViewType: string,
     panelTitle: string,
     viewColumn: vscode.ViewColumn,
-    config: vscode.WebviewPanelOptions & vscode.WebviewOptions
+    config: vscode.WebviewPanelOptions & vscode.WebviewOptions,
+    mermaidText: string
   ): void {
     if (!ReactWebViewPanel.currentPanel) {
       const panel = vscode.window.createWebviewPanel(
@@ -38,17 +55,13 @@ export class ReactWebViewPanel {
       );
       ReactWebViewPanel.currentPanel = new ReactWebViewPanel(
         panel,
-        extentionUri
+        extentionUri,
+        mermaidText
       );
     }
     ReactWebViewPanel.currentPanel?._panel.reveal(vscode.ViewColumn.Beside);
   }
 
-  private _registOnDidReceiveMessageHandler(
-    listener: (e: any) => any,
-    thisArgs?: any,
-    disposables?: vscode.Disposable[]
-  ): void {}
   private _getWebviewContent(
     webview: vscode.Webview,
     extensionUri: vscode.Uri

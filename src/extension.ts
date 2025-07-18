@@ -1,39 +1,6 @@
 import * as vscode from "vscode";
 import { ReactWebViewPanel } from "./webview/ReactWebViewPanel";
-
-/**
- * markdownからMermaidブロックを探し、レンダリング用の情報を返す
- * @param {vscode.TextDocument} document
- * @returns {Array<{ range: vscode.Range; content: string }>}
- */
-function findMermaidBlocks(
-  document: vscode.TextDocument
-): { range: vscode.Range; content: string }[] {
-  const blocks: { range: vscode.Range; content: string }[] = [];
-  const lines = document.getText().split("\n");
-
-  let inMermaid = false;
-  let startLine = 0;
-  let content = "";
-
-  lines.forEach((line, i) => {
-    if (!inMermaid && line.trim() === "```mermaid") {
-      inMermaid = true;
-      startLine = i;
-      content = "";
-    } else if (inMermaid && line.trim() === "```") {
-      inMermaid = false;
-      blocks.push({
-        range: new vscode.Range(startLine, 0, i, 3),
-        content,
-      });
-    } else if (inMermaid) {
-      content += line + "\n";
-    }
-  });
-
-  return blocks;
-}
+import { findMermaidBlocks } from "./utilities/findMermaidBlocks";
 
 /**
  * Mermaidコードブロックに対するCodeLensプロバイダー
@@ -48,6 +15,7 @@ class MermaidCodeLensProvider implements vscode.CodeLensProvider {
       const command: vscode.Command = {
         title: "Mermaid プレビューを開く",
         command: "mermaidPreview.open",
+        // 関数呼び出しの引数になる
         arguments: [block.content],
       };
       lenses.push(new vscode.CodeLens(block.range, command));
@@ -55,37 +23,6 @@ class MermaidCodeLensProvider implements vscode.CodeLensProvider {
 
     return lenses;
   }
-}
-
-/**
- * Mermaidプレビューを開くコマンドの実装
- * @param {string} content Mermaidコード
- */
-function showMermaidPreview(content: string) {
-  const panel = vscode.window.createWebviewPanel(
-    "mermaidPreview",
-    "Mermaid Preview",
-    vscode.ViewColumn.Beside,
-    { enableScripts: true }
-  );
-
-  panel.webview.html = getWebviewContent();
-}
-
-/**
- * Mermaidコードを含むWebviewのコンテンツを生成する
- * @param mermaidCode Mermaidコード
- * @returns
- */
-function getWebviewContent(): string {
-  const distPath = vscode.Uri.joinPath(
-    this._extensionUri,
-    "src",
-    "webview",
-    "dist"
-  );
-  const htmlPath = vscode.Uri.joinPath(distPath, "index.html");
-  let html = fs.readFileSync(htmlPath.fsPath, "utf-8");
 }
 
 export function activate(context: vscode.ExtensionContext) {
@@ -96,8 +33,9 @@ export function activate(context: vscode.ExtensionContext) {
     )
   );
 
-  context.subscriptions.push(
-    vscode.commands.registerCommand("mermaidPreview.open", () => {
+  const command = vscode.commands.registerCommand(
+    "mermaidPreview.open",
+    (mermaidText: string) => {
       ReactWebViewPanel.render(
         context.extensionUri,
         "mermaidPreview",
@@ -109,10 +47,12 @@ export function activate(context: vscode.ExtensionContext) {
           localResourceRoots: [
             vscode.Uri.joinPath(context.extensionUri, "src/webview/dist"),
           ],
-        }
+        },
+        mermaidText
       );
-    })
+    }
   );
+  context.subscriptions.push(command);
 }
 
 // This method is called when your extension is deactivated
