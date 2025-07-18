@@ -1,4 +1,5 @@
 import * as vscode from "vscode";
+import { ReactWebViewPanel } from "./webview/ReactWebViewPanel";
 
 /**
  * markdownからMermaidブロックを探し、レンダリング用の情報を返す
@@ -68,7 +69,7 @@ function showMermaidPreview(content: string) {
     { enableScripts: true }
   );
 
-  panel.webview.html = getWebviewContent(content);
+  panel.webview.html = getWebviewContent();
 }
 
 /**
@@ -76,52 +77,15 @@ function showMermaidPreview(content: string) {
  * @param mermaidCode Mermaidコード
  * @returns
  */
-function getWebviewContent(mermaidCode: string): string {
-  return `
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <style>
-        html, body {
-          margin: 0; padding: 0;
-          height: 100%; width: 100%;
-          overflow: hidden;
-        }
-        #container {
-          width: 100%;
-          height: 100%;
-          overflow: auto;
-        }
-        #graph {
-          transform-origin: top left;
-        }
-      </style>
-    </head>
-    <body>
-      <div id="container">
-        <div id="graph" class="mermaid">${mermaidCode}</div>
-      </div>
-      <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
-      <script>
-        mermaid.initialize({ startOnLoad: true });
-
-        let scale = 1.0;
-        const graph = document.getElementById('graph');
-        const container = document.getElementById('container');
-
-        container.addEventListener('wheel', (e) => {
-          if (e.ctrlKey) {
-            e.preventDefault();
-            const delta = e.deltaY > 0 ? -0.1 : 0.1;
-            scale += delta;
-            scale = Math.max(0.2, Math.min(100.0, scale));
-            graph.style.transform = \`scale(\${scale})\`;
-          }
-        }, { passive: false });
-      </script>
-    </body>
-    </html>
-  `;
+function getWebviewContent(): string {
+  const distPath = vscode.Uri.joinPath(
+    this._extensionUri,
+    "src",
+    "webview",
+    "dist"
+  );
+  const htmlPath = vscode.Uri.joinPath(distPath, "index.html");
+  let html = fs.readFileSync(htmlPath.fsPath, "utf-8");
 }
 
 export function activate(context: vscode.ExtensionContext) {
@@ -133,12 +97,21 @@ export function activate(context: vscode.ExtensionContext) {
   );
 
   context.subscriptions.push(
-    vscode.commands.registerCommand(
-      "mermaidPreview.open",
-      (mermaidCode: string) => {
-        showMermaidPreview(mermaidCode);
-      }
-    )
+    vscode.commands.registerCommand("mermaidPreview.open", () => {
+      ReactWebViewPanel.render(
+        context.extensionUri,
+        "mermaidPreview",
+        "Mermaid プレビュー",
+        vscode.ViewColumn.Beside,
+        {
+          enableScripts: true,
+          // Restrict the webview to only load resources from the `out` and `webview-ui/build` directories
+          localResourceRoots: [
+            vscode.Uri.joinPath(context.extensionUri, "src/webview/dist"),
+          ],
+        }
+      );
+    })
   );
 }
 
