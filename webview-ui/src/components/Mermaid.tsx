@@ -17,7 +17,7 @@ async function generateMermaidSvg(id: string, mermaidText: string): Promise<stri
 mermaid.initialize({
     startOnLoad: false,
     theme: 'default',
-
+    suppressErrorRendering: true
 });
 
 interface Props {
@@ -29,8 +29,12 @@ export default function Mermaid({ id, mermaidText }: Props) {
     const panZoomRef = useRef<ReactSVGPanZoom>(null);
     const [value, setValue] = useState<Value | null>(null);
     const [svgString, setSvgString] = useState<string | null>(null);
+    const [windowSize, setWindowSize] = useState({
+        width: window.innerWidth,
+        height: window.innerHeight,
+    });
 
-    const onLoad = async (id: string, mermaidText: string) => {
+    const initialize = async (id: string, mermaidText: string) => {
         const svg = await generateMermaidSvg(id, mermaidText);
         if (!svg) {
             console.error('Failed to generate Mermaid SVG');
@@ -47,8 +51,19 @@ export default function Mermaid({ id, mermaidText }: Props) {
         setSvgString(replacedSvg);
     }
 
+    const handleResize = () => {
+        setWindowSize({
+            width: window.innerWidth,
+            height: window.innerHeight,
+        });
+    }
+
     useEffect(() => {
-        onLoad(id, mermaidText);
+        initialize(id, mermaidText);
+        window.addEventListener('resize', handleResize);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
     }, [id, mermaidText]);
 
     return <>
@@ -57,8 +72,8 @@ export default function Mermaid({ id, mermaidText }: Props) {
                 <ReactSVGPanZoom
                     className='mermaid'
                     ref={panZoomRef}
-                    width={700}
-                    height={700}
+                    width={windowSize.width}
+                    height={windowSize.height}
                     value={value}
                     onChangeValue={setValue}
                     tool="none"
