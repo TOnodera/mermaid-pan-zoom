@@ -23,17 +23,7 @@ function App() {
   const uuid = crypto.randomUUID();
 
   return (
-    <div
-      style={{
-        margin: '0 auto',
-        width: '100%',
-        height: '100%',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        alignContent: 'center',
-      }}
-    >
+    <div className="flex items-center justify-center h-screen">
       <Mermaid id={uuid} mermaidText={mermaid} />
     </div>
   );
