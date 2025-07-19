@@ -1,4 +1,4 @@
-import { Uri, Webview } from "vscode";
+import { Uri, Webview } from 'vscode';
 
 /**
  * vscodeのWebviewで使用するURIを生成するヘルパー関数

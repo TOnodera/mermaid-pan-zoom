@@ -1,8 +1,8 @@
-import * as vscode from "vscode";
-import { getUriForVsCodeWebView } from "../utilities/getUri";
-import { getNonce } from "../utilities/getNonce";
-import * as fs from "fs";
-import { findMermaidBlocks } from "../utilities/findMermaidBlocks";
+import * as vscode from 'vscode';
+import { getUriForVsCodeWebView } from '../utilities/getUri';
+import { getNonce } from '../utilities/getNonce';
+import * as fs from 'fs';
+import { findMermaidBlocks } from '../utilities/findMermaidBlocks';
 
 export class ReactWebViewPanel {
   public static currentPanel: ReactWebViewPanel | undefined;
@@ -26,11 +26,11 @@ export class ReactWebViewPanel {
     // メッセージ受信時の処理
     this._panel.webview.onDidReceiveMessage(
       async (message: { type: string }) => {
-        if (message.type === "get-mermaid") {
+        if (message.type === 'get-mermaid') {
           // マーメイド取得する処理
           console.log(mermaidText);
           this._panel.webview.postMessage({
-            type: "send-mermaid",
+            type: 'send-mermaid',
             payload: mermaidText,
           });
         }
@@ -69,21 +69,21 @@ export class ReactWebViewPanel {
     // ファイルを読み込んでリソースパスを置換
     const indexPath = vscode.Uri.joinPath(
       extensionUri,
-      "src",
-      "webview",
-      "dist",
-      "index.html"
+      'src',
+      'webview',
+      'dist',
+      'index.html'
     );
-    const html = fs.readFileSync(indexPath.fsPath, "utf8");
+    const html = fs.readFileSync(indexPath.fsPath, 'utf8');
     // vscodeのWebview URIに変換
     const replacedHtml = html.replace(
       /(src|href)="(.+?)"/g,
       (match, attr, src) => {
         const resourceUri = vscode.Uri.joinPath(
           extensionUri,
-          "src",
-          "webview",
-          "dist",
+          'src',
+          'webview',
+          'dist',
           src
         );
         const webviewUri = webview.asWebviewUri(resourceUri);
