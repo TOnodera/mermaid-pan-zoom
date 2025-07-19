@@ -20,7 +20,6 @@ interface Props {
 //https://mermaid.js.org/config/usage.html
 export default function Mermaid({ id, mermaidText }: Props) {
     const panZoomRef = useRef<ReactSVGPanZoom>(null);
-    const svgRef = useRef<HTMLDivElement | null>(null);
     const [value, setValue] = useState<Value | null>(null);
 
     const onLoad = async (id: string, mermaidText: string) => {
@@ -29,9 +28,6 @@ export default function Mermaid({ id, mermaidText }: Props) {
             console.error('Failed to generate Mermaid SVG');
             return;
         }
-        if (svgRef.current) {
-            svgRef.current.innerHTML = svg;
-        }
     }
 
     useEffect(() => {
@@ -39,10 +35,9 @@ export default function Mermaid({ id, mermaidText }: Props) {
     }, [id, mermaidText]);
 
     return <ReactSVGPanZoom
-        style={{ width: '100%', height: '100%' }}
         ref={panZoomRef}
-        width={0}
-        height={0}
+        width={500}
+        height={500}
         value={value}
         onChangeValue={setValue}
         tool="none"
@@ -53,8 +48,13 @@ export default function Mermaid({ id, mermaidText }: Props) {
         onMouseDown={() => { }}
         onMouseUp={() => { }}
     >
-        <div
-            ref={svgRef}
-        />
+        <svg width={617} height={316}>
+            <g fillOpacity=".5" strokeWidth="4">
+                <rect x="400" y="40" width="100" height="200" fill="#4286f4" stroke="#f4f142" />
+                <circle cx="108" cy="108.5" r="100" fill="#0ff" stroke="#0ff" />
+                <circle cx="180" cy="209.5" r="100" fill="#ff0" stroke="#ff0" />
+                <circle cx="220" cy="109.5" r="100" fill="#f0f" stroke="#f0f" />
+            </g>
+        </svg>
     </ReactSVGPanZoom>
 }
