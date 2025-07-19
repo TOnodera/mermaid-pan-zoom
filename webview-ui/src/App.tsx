@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Mermaid from "./components/Mermaid";
+import { flippedTriangle } from "mermaid/dist/rendering-util/rendering-elements/shapes/flippedTriangle.js";
 
 declare const acquireVsCodeApi: () => {
   postMessage: (msg: { type: string }) => void;
@@ -22,8 +23,11 @@ function App() {
     });
   }, [mermaid]);
 
+  const uuid = crypto.randomUUID();
 
-  return <Mermaid mermaidText={mermaid} />
+  return <div style={{ margin: "0 auto", width: "100%", height: "100%", display: "flex", justifyContent: "center", alignItems: "center", alignContent: "center" }}>
+    <Mermaid id={uuid} mermaidText={mermaid} />
+  </div>;
 
 }
 
