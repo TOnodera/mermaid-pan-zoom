@@ -15,7 +15,7 @@ function App() {
     if (message.type === 'send-mermaid') {
       setMermaid(message.payload);
     }
-  }
+  };
 
   useEffect(() => {
     // 初期メッセージを送信してマーメイドのテキストを取得
