@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Mermaid from "./components/Mermaid";
 
 declare const acquireVsCodeApi: () => {
   postMessage: (msg: { type: string }) => void;
@@ -15,19 +16,15 @@ function App() {
     vscode.postMessage({ type: "get-mermaid" });
     window.addEventListener("message", (event) => {
       const message = event.data;
-      console.log(event);
       if (message.type === "send-mermaid") {
         setMermaid(message.payload);
       }
     });
-  }, []);
+  }, [mermaid]);
 
 
-  return (
-    <>
-      {mermaid}
-    </>
-  )
+  return <Mermaid mermaidText={mermaid} />
+
 }
 
 export default App
