@@ -17,6 +17,7 @@ async function generateMermaidSvg(id: string, mermaidText: string): Promise<stri
 mermaid.initialize({
     startOnLoad: false,
     theme: 'default',
+
 });
 
 interface Props {
@@ -35,7 +36,15 @@ export default function Mermaid({ id, mermaidText }: Props) {
             console.error('Failed to generate Mermaid SVG');
             return;
         }
-        setSvgString(svg);
+        // mermaidが発番するUUIDが数字で始まる場合レンダリングに失敗するので先頭に文字列を付与する
+        const matched = svg.match(/<svg[^>]*?id="(.+?)"/);
+        if (!matched) {
+            console.error('Failed to find SVG ID');
+            return;
+        }
+        const uuid = matched[1];
+        const replacedSvg = svg.replace(new RegExp(uuid, 'g'), `mermaid-${uuid}`);
+        setSvgString(replacedSvg);
     }
 
     useEffect(() => {
@@ -44,9 +53,8 @@ export default function Mermaid({ id, mermaidText }: Props) {
 
     return <>
         {svgString &&
-            <ReactSvgPanZoomLoader svgXML={svgString} render={(content) => {
-                console.log('SVG content loaded:', content);
-                return <ReactSVGPanZoom
+            <ReactSvgPanZoomLoader svgXML={svgString} render={(content) => (
+                <ReactSVGPanZoom
                     className='mermaid'
                     ref={panZoomRef}
                     width={700}
@@ -65,7 +73,7 @@ export default function Mermaid({ id, mermaidText }: Props) {
                         {content}
                     </svg>
                 </ReactSVGPanZoom >
-            }} />
+            )} />
         }
     </>;
 }

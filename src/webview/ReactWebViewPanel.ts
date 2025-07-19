@@ -97,7 +97,7 @@ export class ReactWebViewPanel {
       `<script$1 nonce="${nonce}">`
     );
 
-    return replacedHtml;
+    return replacedHtmlWithNonce;
   }
 
   public dispose() {
