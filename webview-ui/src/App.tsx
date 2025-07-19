@@ -10,16 +10,23 @@ const vscode = acquireVsCodeApi();
 function App() {
   const [mermaid, setMermaid] = useState<string>('');
 
+  const handleMessage = (event: MessageEvent) => {
+    const message = event.data;
+    if (message.type === 'send-mermaid') {
+      setMermaid(message.payload);
+    }
+  }
+
   useEffect(() => {
+    // 初期メッセージを送信してマーメイドのテキストを取得
     vscode.postMessage({ type: 'get-mermaid' });
-    window.addEventListener('message', (event) => {
-      const message = event.data;
-      if (message.type === 'send-mermaid') {
-        setMermaid(message.payload);
-      }
-    });
+    // メッセージリスナーを登録
+    window.addEventListener('message', handleMessage);
+    // クリーンアップ
+    return () => window.removeEventListener('message', handleMessage);
   }, [mermaid]);
 
+  // mermaid.render()用のユニークなIDを生成
   const uuid = crypto.randomUUID();
 
   return (
