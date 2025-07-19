@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import mermaid from 'mermaid';
-import { ReactSVGPanZoom, type Value } from 'react-svg-pan-zoom';
+import { ReactSVGPanZoom, type Tool, TOOL_PAN, type Value } from 'react-svg-pan-zoom';
 import { ReactSvgPanZoomLoader } from 'react-svg-pan-zoom-loader';
 
 
@@ -29,6 +29,7 @@ export default function Mermaid({ id, mermaidText }: Props) {
     const panZoomRef = useRef<ReactSVGPanZoom>(null);
     const [value, setValue] = useState<Value | null>(null);
     const [svgString, setSvgString] = useState<string | null>(null);
+    const [currentTool, setCurrentTool] = useState<Tool>(TOOL_PAN);
     const [windowSize, setWindowSize] = useState({
         width: window.innerWidth,
         height: window.innerHeight,
@@ -76,9 +77,9 @@ export default function Mermaid({ id, mermaidText }: Props) {
                     height={windowSize.height}
                     value={value}
                     onChangeValue={setValue}
-                    tool="none"
+                    tool={currentTool}
                     modifierKeys={['Alt', 'Shift', 'Control']}
-                    onChangeTool={() => { }}
+                    onChangeTool={tool => setCurrentTool(tool)}
                     onClick={() => { }}
                     onDoubleClick={() => { }}
                     onMouseDown={() => { }}
@@ -88,7 +89,8 @@ export default function Mermaid({ id, mermaidText }: Props) {
                         {content}
                     </svg>
                 </ReactSVGPanZoom >
-            )} />
+            )
+            } />
         }
     </>;
 }

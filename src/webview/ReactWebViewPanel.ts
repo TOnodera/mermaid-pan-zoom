@@ -1,8 +1,6 @@
 import * as vscode from 'vscode';
-import { getUriForVsCodeWebView } from '../utilities/getUri';
 import { getNonce } from '../utilities/getNonce';
 import * as fs from 'fs';
-import { findMermaidBlocks } from '../utilities/findMermaidBlocks';
 
 export class ReactWebViewPanel {
   public static currentPanel: ReactWebViewPanel | undefined;
@@ -28,7 +26,6 @@ export class ReactWebViewPanel {
       async (message: { type: string }) => {
         if (message.type === 'get-mermaid') {
           // マーメイド取得する処理
-          console.log(mermaidText);
           this._panel.webview.postMessage({
             type: 'send-mermaid',
             payload: mermaidText,
@@ -46,20 +43,17 @@ export class ReactWebViewPanel {
     config: vscode.WebviewPanelOptions & vscode.WebviewOptions,
     mermaidText: string
   ): void {
-    if (!ReactWebViewPanel.currentPanel) {
-      const panel = vscode.window.createWebviewPanel(
-        panelViewType,
-        panelTitle,
-        viewColumn,
-        config
-      );
-      ReactWebViewPanel.currentPanel = new ReactWebViewPanel(
-        panel,
-        extentionUri,
-        mermaidText
-      );
-    }
-    ReactWebViewPanel.currentPanel?._panel.reveal(vscode.ViewColumn.Beside);
+    const panel = vscode.window.createWebviewPanel(
+      panelViewType,
+      panelTitle,
+      viewColumn,
+      config
+    );
+    ReactWebViewPanel.currentPanel = new ReactWebViewPanel(
+      panel,
+      extentionUri,
+      mermaidText
+    );
   }
 
   private _getWebviewContent(
