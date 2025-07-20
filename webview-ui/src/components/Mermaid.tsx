@@ -7,6 +7,7 @@ import {
   type Value,
 } from 'react-svg-pan-zoom';
 import { ReactSvgPanZoomLoader } from 'react-svg-pan-zoom-loader';
+import { useWindowSize } from '../hooks/useWindowSize';
 
 async function generateMermaidSvg(
   id: string,
@@ -34,16 +35,16 @@ interface Props {
   id: string;
   mermaidText: string;
 }
-//https://mermaid.js.org/config/usage.html
+/**
+ * Mermaidコンポーネント
+ * //https://mermaid.js.org/config/usage.html
+ */
 export default function Mermaid({ id, mermaidText }: Props) {
   const panZoomRef = useRef<ReactSVGPanZoom>(null);
   const [value, setValue] = useState<Value | null>(null);
   const [svgString, setSvgString] = useState<string | null>(null);
   const [currentTool, setCurrentTool] = useState<Tool>(TOOL_PAN);
-  const [windowSize, setWindowSize] = useState({
-    width: window.innerWidth,
-    height: window.innerHeight,
-  });
+  const windowSize = useWindowSize();
 
   const initialize = async (id: string, mermaidText: string) => {
     const svg = await generateMermaidSvg(id, mermaidText);
@@ -62,19 +63,8 @@ export default function Mermaid({ id, mermaidText }: Props) {
     setSvgString(replacedSvg);
   };
 
-  const handleResize = () => {
-    setWindowSize({
-      width: window.innerWidth,
-      height: window.innerHeight,
-    });
-  };
-
   useEffect(() => {
     initialize(id, mermaidText);
-    window.addEventListener('resize', handleResize);
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
   }, [id, mermaidText]);
 
   return (
