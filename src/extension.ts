@@ -1,59 +1,25 @@
 import * as vscode from 'vscode';
-import { ReactWebViewPanel } from './webview/ReactWebViewPanel';
-import { findMermaidBlocks } from './utilities/findMermaidBlocks';
-import path from 'path';
-
-/**
- * Mermaidコードブロックに対するCodeLensプロバイダー
- * @implements {vscode.CodeLensProvider}
- */
-class MermaidCodeLensProvider implements vscode.CodeLensProvider {
-  provideCodeLenses(document: vscode.TextDocument): vscode.CodeLens[] {
-    const lenses: vscode.CodeLens[] = [];
-
-    const blocks = findMermaidBlocks(document);
-    for (const block of blocks) {
-      const command: vscode.Command = {
-        title: `Mermaid プレビューを開く`,
-        command: 'mermaidPanZoom.open',
-        // コマンド呼び出しの引数になる
-        arguments: [block.content, document.fileName],
-      };
-      lenses.push(new vscode.CodeLens(block.range, command));
-    }
-
-    return lenses;
-  }
-}
+import { PROVIDER_TYPES } from './providers/types';
+import { COMMAND_TYPES } from './commands/types';
+import { CommandsManager } from './infrastructure/commands/CommandsManager';
+import { containerFactory } from './container';
+import { ICodeLensProviderManager } from './providers/ICodeLensProviderManager';
 
 export function activate(context: vscode.ExtensionContext) {
-  context.subscriptions.push(
-    vscode.languages.registerCodeLensProvider(
-      { language: 'markdown' },
-      new MermaidCodeLensProvider()
-    )
-  );
+  // DIコンテナ取得
+  const container = containerFactory(context);
 
-  const command = vscode.commands.registerCommand(
-    'mermaidPanZoom.open',
-    (mermaidText: string, fileUri: string) => {
-      const fileName = path.basename(fileUri);
-      ReactWebViewPanel.render(
-        context.extensionUri,
-        'mermaid-pan-zoom',
-        fileName,
-        vscode.ViewColumn.Beside,
-        {
-          enableScripts: true,
-          localResourceRoots: [
-            vscode.Uri.joinPath(context.extensionUri, 'src/webview/dist'),
-          ],
-        },
-        mermaidText
-      );
-    }
+  // プロバイダー登録
+  const codeLensProviderManager = container.get<ICodeLensProviderManager>(
+    PROVIDER_TYPES.ICodeLensProviderManager
   );
-  context.subscriptions.push(command);
+  codeLensProviderManager.registerCodeLensProvider(context);
+
+  // コマンド登録
+  const commandsManager = container.get<CommandsManager>(
+    COMMAND_TYPES.VscodeCommandManager
+  );
+  commandsManager.registerCommands(context);
 }
 
 // This method is called when your extension is deactivated
