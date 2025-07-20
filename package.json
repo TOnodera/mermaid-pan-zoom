@@ -1,8 +1,27 @@
 {
-  "name": "vscode-mermaid-viewer",
-  "displayName": "vscode-mermaid-viewer",
-  "description": "Preview Mermaid diagrams from Markdown files by clicking on code blocks, with zoom support in a Webview.",
+  "name": "mermaid-pan-zoom",
+  "displayName": "mermaid-pan-zoom",
+  "description": "Add pan and zoom support to Mermaid diagrams in Markdown preview.",
   "version": "0.0.1",
+  "license": "MIT",
+  "icon": "images/icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TOnodera/mermaid-pan-zoom.git"
+  },
+  "bugs": {
+    "url": "https://github.com/TOnodera/mermaid-pan-zoom/issues"
+  },
+  "homepage": "https://github.com/TOnodera/mermaid-pan-zoom#readme",
+  "keywords": [
+    "markdown",
+    "mermaid",
+    "preview",
+    "pan",
+    "zoom",
+    "diagram"
+  ],
+  "main": "./dist/extension.js",
   "engines": {
     "vscode": "^1.102.0"
   },
@@ -12,12 +31,11 @@
   "activationEvents": [
     "onLanguage:markdown"
   ],
-  "main": "./dist/extension.js",
   "contributes": {
     "commands": [
       {
         "command": "mermaidPanZoom.open",
-        "title": "mermaidPanZoom プレビューを開く"
+        "title": "mermaid pan zoom プレビューを開く"
       }
     ],
     "languages": [

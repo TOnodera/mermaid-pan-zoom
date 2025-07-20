@@ -1,71 +1,81 @@
-# vscode-mermaid-viewer README
+# mermaid pan zoom
 
-This is the README for your extension "vscode-mermaid-viewer". After writing up a brief description, we recommend including the following sections.
-
-## Features
-
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
-
-For example if there is an image subfolder under your extension project workspace:
-
-\!\[feature X\]\(images/feature-x.png\)
-
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
-
-## Requirements
-
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
-
-## Extension Settings
-
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
+> 🐬 VS Code extension to add **pan** and **zoom** support to Mermaid diagrams in Markdown preview.  
+> 🐬 VS Code 拡張機能：Markdown の Mermaid 図に **パン・ズーム機能** を追加します。
 
 ---
 
-## Following extension guidelines
+## 📷 Features | 機能
 
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
+- 🔍 Add zoom-in / zoom-out with mouse wheel  
+  マウスホイールでズームイン・ズームアウト
+- ✋ Drag diagrams to pan across the canvas  
+  図をドラッグして移動（パン）可能
+- ⚡️ Works in Markdown file  
+  Markdownファイルで動作します
 
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
+---
 
-## Working with Markdown
+## 🚀 Installation | インストール
 
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
+1. Open Visual Studio Code  
+   Visual Studio Code を開きます
+2. Go to the Extensions panel (`Ctrl+Shift+X`)  
+   拡張機能パネルを開きます（`Ctrl+Shift+X`）
+3. Search for `mermaid-pan-zoom` and install  
+   `mermaid-pan-zoom` を検索してインストールします
 
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
+> 💡 You can also install via CLI:  
+> 💡 以下の CLI でもインストールできます：
+>
+> ```bash
+> code --install-extension TOnodera.mermaid-pan-zoom
+> ```
 
-## For more information
+---
 
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
+## ✨ Usage | 使い方
 
-**Enjoy!**
+1. Open a Markdown (`.md`) file with Mermaid diagram code  
+   Mermaid 図を含む Markdown ファイル（`.md`）を開きます
+2. [英語に変換必要]
+   「Open in Mermaid Pan Zoom」をクリックしてください。
+   ✅ Now you can pan and zoom your diagrams freely!  
+   ✅ Mermaid 図を自由に拡大・縮小・移動できます！
+
+---
+
+## 🛠 Development | 開発情報
+
+```bash
+# Install dependencies
+npm install
+
+# Build extension
+npm run compile
+
+# Watch mode for development
+npm run watch
+
+# Launch in Extension Development Host
+F5 (or use "Run Extension" in VS Code)
+```
+
+---
+
+## 📄 License
+
+[MIT License](./LICENSE)
+
+---
+
+## 🌐 Links
+
+- GitHub: [https://github.com/TOnodera/mermaid-pan-zoom](https://github.com/TOnodera/mermaid-pan-zoom)
+- Issues: [https://github.com/TOnodera/mermaid-pan-zoom/issues](https://github.com/TOnodera/mermaid-pan-zoom/issues)
+
+---
+
+> Made with ❤️ by [TOnodera](https://github.com/TOnodera)
+
+---
