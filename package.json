@@ -16,8 +16,8 @@
   "contributes": {
     "commands": [
       {
-        "command": "mermaidPreview.open",
-        "title": "Mermaid プレビューを開く"
+        "command": "mermaidPanZoom.open",
+        "title": "mermaidPanZoom プレビューを開く"
       }
     ],
     "languages": [

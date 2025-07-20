@@ -15,7 +15,7 @@ class MermaidCodeLensProvider implements vscode.CodeLensProvider {
     for (const block of blocks) {
       const command: vscode.Command = {
         title: `Mermaid プレビューを開く`,
-        command: 'mermaidPreview.open',
+        command: 'mermaidPanZoom.open',
         // 関数呼び出しの引数になる
         arguments: [block.content, document.fileName],
       };
@@ -35,17 +35,16 @@ export function activate(context: vscode.ExtensionContext) {
   );
 
   const command = vscode.commands.registerCommand(
-    'mermaidPreview.open',
+    'mermaidPanZoom.open',
     (mermaidText: string, fileUri: string) => {
       const fileName = path.basename(fileUri);
       ReactWebViewPanel.render(
         context.extensionUri,
-        'mermaidPreview',
+        'mermaid-pan-zoom',
         fileName,
         vscode.ViewColumn.Beside,
         {
           enableScripts: true,
-          // Restrict the webview to only load resources from the `out` and `webview-ui/build` directories
           localResourceRoots: [
             vscode.Uri.joinPath(context.extensionUri, 'src/webview/dist'),
           ],
