@@ -17,12 +17,11 @@ export class MermaidPanZoomOpenCommand implements VscodeCommand {
     private readonly configProvider: IConfigProvider
   ) {}
 
-  execute(...args: [string, vscode.Uri]): void {
-    const [mermaidText, fileUri] = args;
+  execute(mermaidText: string, fileUri: vscode.Uri): void {
     const extentionUri = this.configProvider.getConfig().extentionUri;
     const fileName = path.basename(fileUri.toString());
     ReactWebViewPanel.render(
-      fileUri,
+      extentionUri,
       this.id,
       fileName,
       vscode.ViewColumn.Beside,
