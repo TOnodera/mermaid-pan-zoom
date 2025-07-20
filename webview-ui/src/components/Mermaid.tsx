@@ -25,6 +25,9 @@ mermaid.initialize({
   startOnLoad: false,
   theme: 'default',
   suppressErrorRendering: true,
+  themeVariables: {
+    background: "#fff",
+  }
 });
 
 interface Props {
@@ -88,12 +91,9 @@ export default function Mermaid({ id, mermaidText }: Props) {
               value={value}
               onChangeValue={setValue}
               tool={currentTool}
+              background='#fff'
               modifierKeys={['Alt', 'Shift', 'Control']}
               onChangeTool={(tool) => setCurrentTool(tool)}
-              onClick={() => {}}
-              onDoubleClick={() => {}}
-              onMouseDown={() => {}}
-              onMouseUp={() => {}}
             >
               <svg>{content}</svg>
             </ReactSVGPanZoom>

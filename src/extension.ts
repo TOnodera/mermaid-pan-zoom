@@ -16,7 +16,7 @@ class MermaidCodeLensProvider implements vscode.CodeLensProvider {
       const command: vscode.Command = {
         title: `Mermaid プレビューを開く`,
         command: 'mermaidPanZoom.open',
-        // 関数呼び出しの引数になる
+        // コマンド呼び出しの引数になる
         arguments: [block.content, document.fileName],
       };
       lenses.push(new vscode.CodeLens(block.range, command));
