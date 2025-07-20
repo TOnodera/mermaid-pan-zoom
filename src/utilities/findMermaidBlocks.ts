@@ -4,10 +4,9 @@ import * as vscode from 'vscode';
  * @param {vscode.TextDocument} document
  * @returns {Array<{ range: vscode.Range; content: string }>}
  */
-export function findMermaidBlocks(document: vscode.TextDocument): {
-  fileUri: string;
-  blocks: { range: vscode.Range; content: string }[];
-} {
+export function findMermaidBlocks(
+  document: vscode.TextDocument
+): { range: vscode.Range; content: string }[] {
   const blocks: { range: vscode.Range; content: string }[] = [];
   const lines = document.getText().split('\n');
 
@@ -31,5 +30,5 @@ export function findMermaidBlocks(document: vscode.TextDocument): {
     }
   });
 
-  return { fileUri: document.fileName, blocks };
+  return blocks;
 }
