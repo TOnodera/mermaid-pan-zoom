@@ -38,12 +38,14 @@
 
 1. Open a Markdown (`.md`) file with Mermaid diagram code  
    Mermaid 図を含む Markdown ファイル（`.md`）を開きます
-2. [英語に変換必要]
-   「Open in Mermaid Pan Zoom」をクリックしてください。
+2. Click "Open in Mermaid Pan Zoom"  
+   「Open in Mermaid Pan Zoom」をクリックしてください。  
    ✅ Now you can pan and zoom your diagrams freely!  
    ✅ Mermaid 図を自由に拡大・縮小・移動できます！
 
 ---
+
+![demo](./docs/usage.gif)
 
 ## 🛠 Development | 開発情報
 
