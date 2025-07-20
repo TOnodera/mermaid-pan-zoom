@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import { ReactWebViewPanel } from './webview/ReactWebViewPanel';
 import { findMermaidBlocks } from './utilities/findMermaidBlocks';
+import path from 'path';
 
 /**
  * Mermaidコードブロックに対するCodeLensプロバイダー
@@ -10,13 +11,13 @@ class MermaidCodeLensProvider implements vscode.CodeLensProvider {
   provideCodeLenses(document: vscode.TextDocument): vscode.CodeLens[] {
     const lenses: vscode.CodeLens[] = [];
 
-    const blocks = findMermaidBlocks(document);
+    const { blocks, fileUri } = findMermaidBlocks(document);
     for (const block of blocks) {
       const command: vscode.Command = {
-        title: 'Mermaid プレビューを開く',
+        title: `Mermaid プレビューを開く`,
         command: 'mermaidPreview.open',
         // 関数呼び出しの引数になる
-        arguments: [block.content],
+        arguments: [block.content, fileUri],
       };
       lenses.push(new vscode.CodeLens(block.range, command));
     }
@@ -35,11 +36,12 @@ export function activate(context: vscode.ExtensionContext) {
 
   const command = vscode.commands.registerCommand(
     'mermaidPreview.open',
-    (mermaidText: string) => {
+    (mermaidText: string, fileUri: string) => {
+      const fileName = path.basename(fileUri);
       ReactWebViewPanel.render(
         context.extensionUri,
         'mermaidPreview',
-        'Mermaid プレビュー',
+        fileName,
         vscode.ViewColumn.Beside,
         {
           enableScripts: true,
