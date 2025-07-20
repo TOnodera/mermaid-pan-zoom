@@ -63,9 +63,8 @@ export class ReactWebViewPanel {
     // ファイルを読み込んでリソースパスを置換
     const indexPath = vscode.Uri.joinPath(
       extensionUri,
-      'src',
-      'webview',
       'dist',
+      'webview',
       'index.html'
     );
     const html = fs.readFileSync(indexPath.fsPath, 'utf8');
@@ -75,9 +74,8 @@ export class ReactWebViewPanel {
       (match, attr, src) => {
         const resourceUri = vscode.Uri.joinPath(
           extensionUri,
-          'src',
-          'webview',
           'dist',
+          'webview',
           src
         );
         const webviewUri = webview.asWebviewUri(resourceUri);
