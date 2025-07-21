@@ -49,22 +49,6 @@
 
 ![demo](./docs/usage.gif)
 
-## 🛠 Development | 開発情報
-
-```bash
-# Install dependencies
-npm install
-
-# Build extension
-npm run compile
-
-# Watch mode for development
-npm run watch
-
-# Launch in Extension Development Host
-F5 (or use "Run Extension" in VS Code)
-```
-
 ---
 
 ## 📄 License
