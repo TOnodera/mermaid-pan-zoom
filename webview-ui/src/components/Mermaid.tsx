@@ -73,6 +73,7 @@ export default function Mermaid({ id, mermaidText }: Props) {
               modifierKeys={['Alt', 'Shift', 'Control']}
               onChangeTool={(tool) => setCurrentTool(tool)}
               customToolbar={() => <></>}
+              customMiniature={() => <></>}
             >
               <svg>{content}</svg>
             </ReactSVGPanZoom>
