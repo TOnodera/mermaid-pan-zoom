@@ -27,9 +27,7 @@ export class MermaidPanZoomOpenCommand implements VscodeCommand {
       vscode.ViewColumn.Beside,
       {
         enableScripts: true,
-        localResourceRoots: [
-          vscode.Uri.joinPath(extentionUri, 'src/webview/dist'),
-        ],
+        localResourceRoots: [vscode.Uri.joinPath(extentionUri, 'dist/webview')],
       },
       mermaidText
     );

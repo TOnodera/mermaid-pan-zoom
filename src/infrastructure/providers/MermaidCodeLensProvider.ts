@@ -15,7 +15,7 @@ export class MermaidCodeLensProvider implements vscode.CodeLensProvider {
     const blocks = findMermaidBlocks(document);
     for (const block of blocks) {
       const command: vscode.Command = {
-        title: `Mermaid プレビューを開く`,
+        title: `Open in Mermaid Pan Zoom`,
         command: COMMAND_NAMES.MermaidPanZoomOpen,
         // コマンド呼び出しの引数になる
         arguments: [block.content, document.fileName],
