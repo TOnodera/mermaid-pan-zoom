@@ -16,6 +16,8 @@
 
 ---
 
+![demo](./docs/usage.gif)
+
 ## 🚀 Installation | インストール
 
 1. Open Visual Studio Code  
