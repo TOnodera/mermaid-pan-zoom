@@ -10,7 +10,6 @@ import { ReactSvgPanZoomLoader } from 'react-svg-pan-zoom-loader';
 import { useWindowSize } from '../hooks/useWindowSize';
 import { generateMermaidSvg } from '../utils';
 
-
 mermaid.initialize({
   startOnLoad: false,
   theme: 'default',
@@ -73,6 +72,7 @@ export default function Mermaid({ id, mermaidText }: Props) {
               background="#fff"
               modifierKeys={['Alt', 'Shift', 'Control']}
               onChangeTool={(tool) => setCurrentTool(tool)}
+              customToolbar={() => <></>}
             >
               <svg>{content}</svg>
             </ReactSVGPanZoom>
