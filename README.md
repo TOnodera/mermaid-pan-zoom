@@ -3,6 +3,8 @@
 > 🐬 VS Code extension to add **pan** and **zoom** support to Mermaid diagrams in Markdown preview.  
 > 🐬 VS Code 拡張機能：Markdown の Mermaid 図に **パン・ズーム機能** を追加します。
 
+![demo](./docs/usage.gif)
+
 ---
 
 ## 📷 Features | 機能
@@ -16,7 +18,7 @@
 
 ---
 
-![demo](./docs/usage.gif)
+![icon](./docs/icon.png)
 
 ## 🚀 Installation | インストール
 
