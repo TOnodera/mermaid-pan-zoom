@@ -2,7 +2,7 @@
   "name": "mermaid-pan-zoom",
   "displayName": "mermaid-pan-zoom",
   "description": "Add pan and zoom support to Mermaid diagrams in Markdown preview.",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "license": "MIT",
   "publisher": "TOnodera",
   "icon": "docs/icon.png",
