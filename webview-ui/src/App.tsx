@@ -1,37 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useId } from 'react';
 import Mermaid from './components/Mermaid';
-
-declare const acquireVsCodeApi: () => {
-  postMessage: (msg: { type: string }) => void;
-};
-
-const vscode = acquireVsCodeApi();
+import { useMermaidText } from './hooks/useMermaidText';
 
 function App() {
-  const [mermaid, setMermaid] = useState<string>('');
 
-  const handleMessage = (event: MessageEvent) => {
-    const message = event.data;
-    if (message.type === 'send-mermaid') {
-      setMermaid(message.payload);
-    }
-  };
-
-  useEffect(() => {
-    // 初期メッセージを送信してマーメイドのテキストを取得
-    vscode.postMessage({ type: 'get-mermaid' });
-    // メッセージリスナーを登録
-    window.addEventListener('message', handleMessage);
-    // クリーンアップ
-    return () => window.removeEventListener('message', handleMessage);
-  }, [mermaid]);
-
-  // mermaid.render()用のユニークなIDを生成
-  const uuid = crypto.randomUUID();
+  // マーメイドのテキストを取得するカスタムフックを使用
+  const mermaidText = useMermaidText();
+  // ユニークなIDを生成してMermaidコンポーネントに渡す
+  const id = useId();
 
   return (
     <div className="flex items-center justify-center h-screen">
-      <Mermaid id={uuid} mermaidText={mermaid} />
+      <Mermaid id={id} mermaidText={mermaidText} />
     </div>
   );
 }

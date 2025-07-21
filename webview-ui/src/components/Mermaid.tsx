@@ -8,19 +8,8 @@ import {
 } from 'react-svg-pan-zoom';
 import { ReactSvgPanZoomLoader } from 'react-svg-pan-zoom-loader';
 import { useWindowSize } from '../hooks/useWindowSize';
+import { generateMermaidSvg } from '../utils';
 
-async function generateMermaidSvg(
-  id: string,
-  mermaidText: string
-): Promise<string | null> {
-  try {
-    const { svg } = await mermaid.render(id, mermaidText);
-    return svg;
-  } catch (error) {
-    console.error('Error rendering Mermaid diagram:', error);
-    return null;
-  }
-}
 
 mermaid.initialize({
   startOnLoad: false,
@@ -47,7 +36,7 @@ export default function Mermaid({ id, mermaidText }: Props) {
   const windowSize = useWindowSize();
 
   const initialize = async (id: string, mermaidText: string) => {
-    const svg = await generateMermaidSvg(id, mermaidText);
+    const svg = await generateMermaidSvg({ id, mermaidText, mermaid });
     if (!svg) {
       console.error('Failed to generate Mermaid SVG');
       return;
