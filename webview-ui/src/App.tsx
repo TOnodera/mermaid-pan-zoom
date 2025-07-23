@@ -1,9 +1,8 @@
 import { useId } from 'react';
-import Mermaid from './components/Mermaid';
+import Mermaid from './components/organizations/Mermaid';
 import { useMermaidText } from './hooks/useMermaidText';
 
 function App() {
-
   // マーメイドのテキストを取得するカスタムフックを使用
   const mermaidText = useMermaidText();
   // ユニークなIDを生成してMermaidコンポーネントに渡す

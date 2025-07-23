@@ -7,8 +7,9 @@ import {
   type Value,
 } from 'react-svg-pan-zoom';
 import { ReactSvgPanZoomLoader } from 'react-svg-pan-zoom-loader';
-import { useWindowSize } from '../hooks/useWindowSize';
-import { generateMermaidSvg } from '../utils';
+import { useWindowSize } from '../../hooks/useWindowSize';
+import { generateMermaidSvg } from '../../utils';
+import Toolbar from '../molucules/Toolbar';
 
 mermaid.initialize({
   startOnLoad: false,
@@ -29,7 +30,26 @@ interface Props {
  */
 export default function Mermaid({ id, mermaidText }: Props) {
   const panZoomRef = useRef<ReactSVGPanZoom>(null);
-  const [value, setValue] = useState<Value | null>(null);
+  const [value, setValue] = useState<Value>({
+    version: 2,
+    mode: 'idle',
+    focus: false,
+    a: 1,
+    b: 0,
+    c: 0,
+    d: 1,
+    e: 0,
+    f: 0,
+    viewerWidth: 0,
+    viewerHeight: 0,
+    SVGWidth: 0,
+    SVGHeight: 0,
+    startX: null,
+    startY: null,
+    endX: null,
+    endY: null,
+    miniatureOpen: true,
+  });
   const [svgString, setSvgString] = useState<string | null>(null);
   const [currentTool, setCurrentTool] = useState<Tool>(TOOL_PAN);
   const windowSize = useWindowSize();
@@ -71,9 +91,16 @@ export default function Mermaid({ id, mermaidText }: Props) {
               tool={currentTool}
               background="#fff"
               modifierKeys={['Alt', 'Shift', 'Control']}
-              onChangeTool={(tool) => setCurrentTool(tool)}
-              customToolbar={() => <></>}
+              onChangeTool={setCurrentTool}
               customMiniature={() => <></>}
+              customToolbar={() => (
+                <Toolbar
+                  tool={currentTool}
+                  onChangeTool={(tool) => setCurrentTool(tool)}
+                  value={value}
+                  onChangeValue={setValue}
+                />
+              )}
             >
               <svg>{content}</svg>
             </ReactSVGPanZoom>
